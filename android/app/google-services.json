@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "120973361792",
+    "firebase_url": "https://quiapp-1c97b-default-rtdb.firebaseio.com",
+    "project_id": "quiapp-1c97b",
+    "storage_bucket": "quiapp-1c97b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120973361792:android:20eb108d3fbffa16461c65",
+        "android_client_info": {
+          "package_name": "com.example.quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120973361792-2jt51t610me09aiaj0t2cam7usn17ggv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB09NU0fcxdkBZI5km6566N88GrfSrjWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120973361792-2jt51t610me09aiaj0t2cam7usn17ggv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
