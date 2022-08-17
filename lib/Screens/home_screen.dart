@@ -30,14 +30,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var db = DBconnect(); //create object for db connect
   late Future _questions;
+  List<Question> extractedData = [];
+
   Future<List<Question>> getData() async {
     return db.fetchQuestions();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+
+    super.didChangeDependencies();
+    showMesg();
   }
 
   @override
   void initState() {
     _questions = getData();
     super.initState();
+    nextQWithoutPressing();
   }
 
   // final List<Question> _questions = [
@@ -58,8 +69,21 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isAlreadySelected = false;
   //check if user clicked
   bool isPressed = false;
+  void showMesg() {
+    Future.delayed(Duration.zero, () {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            "You have 10 Second to Answer the Question ,other wise the Question will disappear"),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+      ));
+    });
+  }
   //function to display next question
+
   void nextQuestion(int questionLenght) {
+    // nextQWithoutPressing();
+
     if (index == questionLenght - 1) {
       showDialog(
           context: context,
@@ -73,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: startOver,
               ));
     } else {
+      nextQWithoutPressing();
       if (isPressed) {
         setState(() {
           index++;
@@ -89,7 +114,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void checkAnswerAndUpdate(bool value) {
+  Future<void> nextQWithoutPressing() async {
+    // if (!isPressed) {
+    await Future.delayed(const Duration(seconds: 10));
+
+    setState(() {
+      isPressed == true ? isPressed = false : isPressed = true;
+      // index += 1;
+      print(isPressed);
+      nextQuestion(extractedData.length);
+    });
+
+    // }
+  }
+
+  Future<void> checkAnswerAndUpdate(bool value) async {
     if (isAlreadySelected) {
       return;
     } else {
@@ -102,6 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isPressed = true;
         isAlreadySelected = true;
+      });
+      await Future.delayed(const Duration(seconds: 2));
+      setState(() {
+        nextQuestion(extractedData.length);
+        // index += 1;
+        // isPressed = false;
+        // isAlreadySelected = false;
       });
     }
   }
@@ -127,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text('${snapshot.error}'),
               );
             } else if (snapshot.hasData) {
-              var extractedData = snapshot.data as List<Question>;
+              extractedData = snapshot.data as List<Question>;
               return Scaffold(
                 backgroundColor: background,
                 appBar: widget.showAppBar
